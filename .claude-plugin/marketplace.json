@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "karto-marketplace",
+  "description": "State-space profiling toolkit for Claude Code",
+  "owner": {
+    "name": "Horia Cristescu"
+  },
+  "plugins": [
+    {
+      "name": "karto",
+      "description": "Induce, apply, audit and debug state-space profiles in any domain",
+      "author": {
+        "name": "Horia Cristescu"
+      },
+      "source": "./plugins/karto",
+      "category": "productivity"
+    }
+  ]
+}

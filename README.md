@@ -1,46 +1,49 @@
-# Karto Plugin — Release Repo
+# Karto
 
-This directory is a separate git repository that holds only the distributable plugin files.
-It is pushed to a public GitHub repo so users can install via Claude Code's plugin marketplace.
+State-space profiling toolkit for Claude Code. Karto helps you induce, apply, audit, and debug **State-Space Profiles (SSPs)** — discrete coordinate systems that map the positions of data points across any domain. An SSP becomes useful only when rendered runnable: as a model it acts as a mirror, flagging inconsistencies in data or the SSP itself.
 
-## Setup (one-time)
-
-Create the public GitHub repo and connect it:
+## Install
 
 ```bash
-gh repo create horiacristescu/karto-plugin --public --description "State-space profiling toolkit for Claude Code"
-git -C release remote add origin git@github.com:horiacristescu/karto-plugin.git
+/plugin marketplace add horiacristescu/karto-plugin
 ```
 
-## Releasing
-
-From the dev repo root (`~/Code/karto/`):
+Then bootstrap a project:
 
 ```bash
-bin/release "Release message"
+bash scripts/init my-project/
 ```
-
-This syncs distributable files from dev → `release/plugins/karto/`, commits, and pushes.
-Use `bin/release --no-push "message"` to sync and commit without pushing (useful when remote not yet set).
 
 ## Layout
 
 ```
-release/
-  .claude-plugin/marketplace.json   # marketplace manifest (repo root)
-  plugins/karto/                    # plugin files
-    .claude-plugin/plugin.json
-    commands/
-    skills/karto/
-    agents/
-    code/karto/
-    docs/
-    scripts/
-    mcp/
+.claude-plugin/       Plugin manifest (plugin.json, marketplace.json)
+skills/karto/         Model-invoked methodology skills
+commands/             User slash commands (/karto:apply, /karto:induct, /karto:debug)
+agents/               Specialized agents (inducer, debugger)
+src/karto/            Python library — SSP base types, feature backends, tracing
+scripts/              init bootstrap script
+docs/                 Methodology reference (docs/MIND_MAP.md)
+mcp/                  MCP server (future)
+bin/                  Dev tooling (bin/release syncs to public repo)
+release/              Public plugin repo (own git → github.com/horiacristescu/karto-plugin)
 ```
 
-## Install (users)
+## Methodology
+
+See [docs/MIND_MAP.md](docs/MIND_MAP.md) for the full SSP methodology: induction, substrate fungibility, dual-substrate scoring, five-mode mirror validation, triage taxonomy, and the six product surfaces.
+
+Key concepts:
+- **SSP** — discrete categorical features (3-6 hyphenated values) describing positions in a domain
+- **Mirror thesis** — an SSP-as-text is weak; rendered as a runnable model it forces discrepancy detection
+- **Dual substrate** — Python rules + CatBoost score every input by default; divergence is signal
+- **Triage** — 3-round stopping heuristic, 5-bucket taxonomy (feature gap / label noise / DK gap / multi-valid / segmentation gap)
+
+## User Project Layout (after `scripts/init`)
 
 ```
-/plugin marketplace add horiacristescu/karto-plugin
+my-project/
+  ssps/                   One subdir per SSP: ssps/<name>/{raw/, traces/, versions/}
+  ingestion.py            Implement ingest(source) → list[dict] for your data sources
+  CLAUDE.md               Karto-using instructions for agents working in this project
 ```

@@ -1,0 +1,8 @@
+{
+  "name": "karto",
+  "description": "State-space profiling toolkit for Claude Code — see docs/MIND_MAP.md for methodology",
+  "version": "0.1.0",
+  "author": {
+    "name": "Horia Cristescu"
+  }
+}

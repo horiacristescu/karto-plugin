@@ -1,0 +1,120 @@
+#!/bin/bash
+# scripts/init — bootstrap a Karto user project
+#
+# Usage: scripts/init [project_dir]
+#   project_dir defaults to CWD.
+#   Safe to re-run: skips files that already exist.
+
+set -e
+
+PROJECT_DIR="${1:-$PWD}"
+
+CREATED=()
+SKIPPED=()
+
+write_if_absent() {
+    local path="$1"
+    local content="$2"
+    if [ -e "$path" ]; then
+        SKIPPED+=("$path")
+    else
+        mkdir -p "$(dirname "$path")"
+        printf '%s' "$content" > "$path"
+        CREATED+=("$path")
+    fi
+}
+
+# --- ssps/README.md ---
+write_if_absent "$PROJECT_DIR/ssps/README.md" '# SSPs
+
+Each SSP lives in its own subdirectory:
+
+    ssps/<name>/
+      raw/          Source data as-received (transcripts, PDFs, JSON exports, etc.)
+      traces/       Extracted trace records — one dict per observation/step
+      versions/     Induced SSP schemas and code across induction rounds
+                    e.g. v1/ssp.py, v1/catboost.cbm, v2/ssp.py ...
+
+Multiple SSPs that share the same source material can share a traces/ folder:
+
+    ssps/shared_traces/   traces/ used by ssp_a/ and ssp_b/
+    ssps/ssp_a/versions/
+    ssps/ssp_b/versions/
+
+## Getting started
+
+1. Run `/karto:induct` to induce an SSP from your traces
+2. Run `/karto:apply` to score new inputs against an induced SSP
+3. Run `/karto:debug` to triage label noise, feature gaps, and DK gaps
+'
+
+# --- ingestion.py ---
+write_if_absent "$PROJECT_DIR/ingestion.py" 'from typing import Any
+
+
+def ingest(source: str) -> list[dict[str, Any]]:
+    """Convert a raw source into a list of trace records.
+
+    Each record is a flat dict with string keys. Values should be strings
+    or simple scalars — the SSP induction skill will read these dicts and
+    extract features from them.
+
+    Args:
+        source: Path or identifier for the raw data (file path, URL, etc.)
+
+    Returns:
+        List of trace dicts, one per observation or step.
+
+    Raises:
+        NotImplementedError: Replace this with domain-specific parsing logic.
+            See /karto:induct for guidance on what traces should look like.
+    """
+    raise NotImplementedError(
+        f"Implement ingest() for your data source: {source!r}\n"
+        "Each returned dict becomes one trace record for SSP induction."
+    )
+'
+
+# --- CLAUDE.md ---
+write_if_absent "$PROJECT_DIR/CLAUDE.md" '# Karto Project
+
+This project uses the [Karto plugin](https://github.com/horiacristescu/karto-plugin)
+for state-space profiling. SSPs live in `ssps/`, ingestion logic in `ingestion.py`.
+
+## SSP Layout
+
+    ssps/<name>/raw/        Raw source data
+    ssps/<name>/traces/     Extracted trace records (list of dicts)
+    ssps/<name>/versions/   Induced SSP schemas and code by round
+
+## Workflow
+
+1. **Ingest** — implement `ingestion.py:ingest(source)` for your data sources
+2. **Induce** — `/karto:induct` walks you through framing → feature induction → SSP schema
+3. **Apply** — `/karto:apply` scores new inputs against an induced SSP
+4. **Debug** — `/karto:debug` triages divergences (feature gap / label noise / DK gap)
+
+## Commands
+
+- `/karto:induct` — induce a new SSP from traces (or refine an existing one)
+- `/karto:apply` — apply an SSP to new input data, produce scored output
+- `/karto:debug` — debug SSP predictions, triage mismatches
+
+## Key Files
+
+- `ssps/README.md` — SSP directory layout reference
+- `ingestion.py` — implement `ingest(source) -> list[dict]` here
+- `docs/MIND_MAP.md` — full SSP methodology reference (shipped with plugin)
+'
+
+# --- Summary ---
+echo "Karto project initialized in: $PROJECT_DIR"
+echo ""
+if [ ${#CREATED[@]} -gt 0 ]; then
+    echo "Created:"
+    for f in "${CREATED[@]}"; do echo "  $f"; done
+fi
+if [ ${#SKIPPED[@]} -gt 0 ]; then
+    echo "Skipped (already exist):"
+    for f in "${SKIPPED[@]}"; do echo "  $f"; done
+fi
