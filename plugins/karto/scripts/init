@@ -107,10 +107,8 @@ for state-space profiling. SSPs live in `ssps/`, ingestion logic in `ingestion.p
 
 ## Methodology Reference
 
-The full SSP methodology is in the Karto plugin docs:
-`~/.claude/plugins/marketplaces/karto-marketplace/plugins/karto/docs/MIND_MAP.md`
-
-Or read it in the dev repo: `~/Code/karto/docs/MIND_MAP.md`
+Use the installed Karto skills and commands for workflow guidance. The Karto
+development repo keeps deeper design history in `~/Code/karto/MIND_MAP.md`.
 '
 
 # --- Summary ---

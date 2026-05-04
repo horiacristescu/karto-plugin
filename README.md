@@ -23,7 +23,7 @@ commands/             User slash commands (/karto:apply, /karto:induct, /karto:d
 agents/               Specialized agents (inducer, debugger)
 src/karto/            Python library — SSP base types, feature backends, tracing
 scripts/              init bootstrap script
-docs/                 Methodology reference (docs/MIND_MAP.md)
+docs/                 Curated public plugin docs
 mcp/                  MCP server (future)
 bin/                  Dev tooling (bin/release syncs to public repo)
 release/              Public plugin repo (own git → github.com/horiacristescu/karto-plugin)
@@ -31,7 +31,7 @@ release/              Public plugin repo (own git → github.com/horiacristescu/
 
 ## Methodology
 
-See [docs/MIND_MAP.md](docs/MIND_MAP.md) for the full SSP methodology: induction, substrate fungibility, dual-substrate scoring, five-mode mirror validation, triage taxonomy, and the six product surfaces.
+Karto's development methodology lives in root [MIND_MAP.md](MIND_MAP.md). The released plugin does not ship that dev memory verbatim; public docs, skills, commands, and agents carry the curated user-facing workflow.
 
 Key concepts:
 - **SSP** — discrete categorical features (3-6 hyphenated values) describing positions in a domain
