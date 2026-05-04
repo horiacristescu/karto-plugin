@@ -104,7 +104,13 @@ for state-space profiling. SSPs live in `ssps/`, ingestion logic in `ingestion.p
 
 - `ssps/README.md` — SSP directory layout reference
 - `ingestion.py` — implement `ingest(source) -> list[dict]` here
-- `docs/MIND_MAP.md` — full SSP methodology reference (shipped with plugin)
+
+## Methodology Reference
+
+The full SSP methodology is in the Karto plugin docs:
+`~/.claude/plugins/marketplaces/karto-marketplace/plugins/karto/docs/MIND_MAP.md`
+
+Or read it in the dev repo: `~/Code/karto/docs/MIND_MAP.md`
 '
 
 # --- Summary ---
