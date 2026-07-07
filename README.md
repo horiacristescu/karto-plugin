@@ -2,6 +2,8 @@
 
 State-space profiling toolkit for Claude Code. Karto helps you induce, apply, audit, and debug **State-Space Profiles (SSPs)** — discrete coordinate systems that map the positions of data points across any domain. An SSP becomes useful only when rendered runnable: as a model it acts as a mirror, flagging inconsistencies in data or the SSP itself.
 
+**Start here:** [Agents don't need smarter models, they need a map](plugins/karto/docs/ssp-agents.md) — the long-form article on the SSP method: why agents fail, the named-state middle layer, tail-to-head induction from traces, the blame ladder, and running the map in production.
+
 ## Install
 
 ```bash
